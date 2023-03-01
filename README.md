@@ -30,7 +30,9 @@ Funcionalidades
 
 Estructura del proyecto
 
-* `src/main/java/com/veterinaria`: Contiene las clases Java que implementan la lógica de la aplicación.
-* `web/WEB-INF`: Contiene los archivos de configuración de la aplicación y las páginas JSP.
-* `web/css`: Contiene los archivos CSS utilizados para estilizar las páginas JSP.
-* `web/js`: Contiene los archivos JavaScript utilizados para implementar la funcionalidad en el cliente.
+* `src/main/java/controllers`: Contiene las clases Java que implementan la lógica de la aplicación.
+* `src/main/java/models`: Contiene las clases Java que representan los modelos de datos de la aplicación.
+* `src/main/java/data_access_object`: Contiene las clases Java que implementan el acceso a la base de datos.
+* `webapp/WEB-INF`: Contiene los archivos de configuración de la aplicación y las páginas JSP.
+* `webapp/css`: Contiene los archivos CSS utilizados para estilizar las páginas JSP.
+* `webapp/js`: Contiene los archivos JavaScript utilizados para implementar la funcionalidad en el cliente.

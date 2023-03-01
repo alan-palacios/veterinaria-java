@@ -13,4 +13,19 @@
             30
         </session-timeout>
     </session-config>
+    <context-param>
+        <param-name>jdbcUrl</param-name>
+        <param-value>jdbc:mysql://localhost:3306/veterinaria</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>jdbcUsername</param-name>
+        <param-value>root</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>jdbcPassword</param-name>
+        <param-value>n0m3l0</param-value>
+    </context-param>
+
 </web-app>

@@ -30,6 +30,15 @@ public class Mascota {
         this.imagen = imagen;
         this.tamano = tamano;
     }
+    
+    public Mascota(int propietario_id, int raza_id, Timestamp nacimiento, String nombre, Blob imagen, int tamano) {
+        this.propietario_id = propietario_id;
+        this.raza_id = raza_id;
+        this.nacimiento = nacimiento;
+        this.nombre = nombre;
+        this.imagen = imagen;
+        this.tamano = tamano;
+    }
 
     public int getId() {
         return id;
