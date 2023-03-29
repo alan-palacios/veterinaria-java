@@ -1,0 +1,38 @@
+nav {
+  background-color: var(--color-primary);
+  height: 50px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  display-direction: row;
+  justify-content: end;
+  align-items: end;
+}
+
+.links{
+  display: flex;
+  display-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  width: 50%;
+}
+
+.links a {
+  color: white;
+  text-decoration: none;
+  padding: 0 20px;
+}
+.links a:hover {
+  color: var(--color-secondary);
+}
+.links a:active {
+  color: var(--color-tertiary);
+}
+.links a:visited {
+  color: white;
+}

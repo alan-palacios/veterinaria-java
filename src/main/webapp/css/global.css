@@ -1,0 +1,24 @@
+/* css reset */
+html, body, div {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* color variables */
+:root {
+  --color-primary: #4C99F1;
+  --color-secondary: #C2E2FE;
+  --color-tertiary: #5F2FE7;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}

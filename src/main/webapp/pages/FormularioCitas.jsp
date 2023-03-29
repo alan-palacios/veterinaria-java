@@ -1,12 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Agendar Cita</title>
-    </head>
-    <body>
-        <h1>Agenda tu cita</h1>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+
+<t:wrapper>
+    <jsp:body>
+        <h1>Agenda tu cita con nosotros</h1>
         <form action="citas" method="POST">
             <table>
                 <tr>
@@ -42,5 +39,5 @@
                 </tr>
             </table>
         </form>
-    </body>
-</html>
+    </jsp:body>
+</t:wrapper>

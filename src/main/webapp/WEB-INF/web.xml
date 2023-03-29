@@ -8,6 +8,7 @@
         <servlet-name>mascotas</servlet-name>
         <url-pattern>/mascotas</url-pattern>
     </servlet-mapping>
+
     <servlet>
         <servlet-name>citas</servlet-name>
         <servlet-class>controllers.ServletCitas</servlet-class>
@@ -16,6 +17,7 @@
         <servlet-name>citas</servlet-name>
         <url-pattern>/citas</url-pattern>
     </servlet-mapping>
+
     <session-config>
         <session-timeout>
             30

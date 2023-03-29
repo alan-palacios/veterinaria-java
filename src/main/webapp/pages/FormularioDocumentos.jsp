@@ -3,8 +3,6 @@
 
 <t:wrapper>
     <jsp:body>
-      <div class="container">
-        Hi from indexx
-      </div>
+        <h1>Documentos</h1>
     </jsp:body>
 </t:wrapper>
