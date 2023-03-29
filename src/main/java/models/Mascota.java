@@ -1,51 +1,40 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package models;
 
 import java.sql.Blob;
 import java.sql.Timestamp;
 
-/**
- *
- * @author AlanPalacios
- */
-public class Mascota {
-    private int id;
+public class Mascota extends DBObject{
     private int propietario_id;
     private int raza_id;
     private Timestamp nacimiento;
     private String nombre;
     private Blob imagen;
     private int tamano;
+    private int peso;
+    private String sexo;
 
-    public Mascota(int id, int propietario_id, int raza_id, Timestamp nacimiento, String nombre, Blob imagen, int tamano) {
-        this.id = id;
+    public Mascota(int id, int propietario_id, int raza_id, Timestamp nacimiento, String nombre, Blob imagen, int tamano, int peso, String sexo) {
+        super(id);
         this.propietario_id = propietario_id;
         this.raza_id = raza_id;
         this.nacimiento = nacimiento;
         this.nombre = nombre;
         this.imagen = imagen;
         this.tamano = tamano;
+        this.sexo = sexo;
+        this.peso = peso;
     }
     
-    public Mascota(int propietario_id, int raza_id, Timestamp nacimiento, String nombre, Blob imagen, int tamano) {
+    public Mascota(int propietario_id, int raza_id, Timestamp nacimiento, String nombre, Blob imagen, int tamano, int peso, String sexo) {
+        super();
         this.propietario_id = propietario_id;
         this.raza_id = raza_id;
         this.nacimiento = nacimiento;
         this.nombre = nombre;
         this.imagen = imagen;
         this.tamano = tamano;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.sexo = sexo;
+        this.peso = peso;
     }
 
     public int getPropietario_id() {
@@ -96,5 +85,19 @@ public class Mascota {
         this.tamano = tamano;
     }
     
-    
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public int getPeso() {
+        return peso;
+    }
+
+    public void setPeso(int peso) {
+        this.peso = peso;
+    }
 }
