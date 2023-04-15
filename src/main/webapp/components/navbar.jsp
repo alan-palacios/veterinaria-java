@@ -6,6 +6,6 @@
         <a href="${pageContext.request.contextPath}/pages/FormularioCitas.jsp">Agendar Cita</a>
         <a href="${pageContext.request.contextPath}/pages/FormularioPropietarios.jsp">Agregar Propietarios</a>
         <a href="${pageContext.request.contextPath}/pages/FormularioMascotas.jsp">Agregar Mascota</a>
-        <a href="${pageContext.request.contextPath}/pages/FormularioDocumentos.jsp">Agregar Documento</a>
+        <a href="${pageContext.request.contextPath}/pages/FormularioRegistro.jsp">Registrate/ Inicia Sesion</a>
     </div>
 </nav>

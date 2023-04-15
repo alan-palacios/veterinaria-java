@@ -17,7 +17,7 @@
         <servlet-name>citas</servlet-name>
         <url-pattern>/citas</url-pattern>
     </servlet-mapping>
-
+    
     <session-config>
         <session-timeout>
             30

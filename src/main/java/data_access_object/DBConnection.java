@@ -15,11 +15,13 @@ public class DBConnection {
   public static Connection getConnection(ServletContext context) {
     if (connection == null) {
       try {
-        String url = context.getInitParameter("db.url");
-        String user = context.getInitParameter("db.user");
-        String password = context.getInitParameter("db.password");
+        String url = context.getInitParameter("jdbcUrl");
+        String user = context.getInitParameter("jdbcUsername");
+        String password = context.getInitParameter("jdbcPassword");
+        // load and register JDBC driver for MySQL
+        Class.forName("com.mysql.cj.jdbc.Driver"); 
         connection = DriverManager.getConnection(url, user, password);
-      } catch (SQLException e) {
+      } catch (SQLException | ClassNotFoundException e) {
         e.printStackTrace();
       }
     }
