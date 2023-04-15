@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
 
 import models.Propietario;
 
@@ -36,6 +37,9 @@ public class PropietarioDAO {
 	public Propietario save(Propietario propietario) throws SQLException {
 		System.out.println(propietario.getIdPropietario());
 		if (propietario.getIdPropietario() == -1) {
+			// cifrar contraseña
+			propietario.setPassword(BCrypt.hashpw(propietario.getPassword(), BCrypt.gensalt()));
+
 			// Insert propietario
 			this.insertStatement.setString(1, propietario.getCorreo());
 			this.insertStatement.setString(2, propietario.getNombre());

@@ -48,7 +48,7 @@
                 </div>
                 <div class="row">
                     <span>¿Ya tienes una cuenta?</span>
-                    <a href="login">Inicia sesión</a>
+                    <a href="login.jsp">Inicia sesión</a>
                 </div>
             </form>
         </div>

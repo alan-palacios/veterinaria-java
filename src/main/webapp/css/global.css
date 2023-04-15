@@ -39,6 +39,10 @@ html, body, div {
   justify-content: center;
 }
 
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
 h1 {
   font-size: 1.5rem;
   font-weight: 600;

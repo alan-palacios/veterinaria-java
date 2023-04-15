@@ -40,7 +40,7 @@ public class PropietariosServlet extends HttpServlet {
             request.getParameter("appat"),
             request.getParameter("apmat"),
             request.getParameter("dir"),
-            request.getParameter("password")
+            request.getParameter("contraseña")
         );
         try {
             propietario = propietarioDAO.save(propietario);
