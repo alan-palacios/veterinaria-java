@@ -17,25 +17,29 @@ import models.Propietario;
 public class PropietarioDAO {
 	private Connection connection; 
 	
-	private PreparedStatement insertStatement, updateStatement, selectAllStatement, selectByIdStatement, selectLoginStatement;
+	private PreparedStatement insertStatement,
+		updateStatement,
+		selectAllStatement,
+		selectByIdStatement,
+		selectLoginStatement,
+		deleteByIdStatement;
 	
 	private final String insertQuery = "INSERT INTO propietario (correo, nombre, appat, apmat, dir, password) VALUES (?, ?, ?, ?, ?, ?)";
-	private final String updateQuery = "UPDATE propietario SET correo=?, nombre=?, appat=?, apmat=?, dir=?, password=? WHERE id=?";
+	private final String updateQuery = "UPDATE propietario SET nombre=?, appat=?, apmat=?, dir=? WHERE id_propietario=?";
+	private final String deleteQuery = "DELETE FROM propietario WHERE id_propietario=?";
 	private final String selectAllQuery = "SELECT * FROM propietario";
 	private final String selectByIdQuery = "SELECT * FROM propietario WHERE id_propietario=?";
 	private final String selectLogin = "SELECT * FROM propietario WHERE correo=?";
 
-	private String secret;
-
 	public PropietarioDAO(Connection connection, ServletContext context){
 		this.connection = connection;
-		this.secret = context.getInitParameter("hash-secret");
 		try {
 			this.insertStatement = this.connection.prepareStatement(this.insertQuery, Statement.RETURN_GENERATED_KEYS); // flag generate auto increment key
 			this.updateStatement = this.connection.prepareStatement(this.updateQuery);
 			this.selectAllStatement = this.connection.prepareStatement(this.selectAllQuery);
 			this.selectByIdStatement = this.connection.prepareStatement(this.selectByIdQuery);
 			this.selectLoginStatement = this.connection.prepareStatement(this.selectLogin);
+			this.deleteByIdStatement = this.connection.prepareStatement(this.deleteQuery);
 		} catch (Exception e) {
       e.printStackTrace();
 		}
@@ -68,13 +72,11 @@ public class PropietarioDAO {
 			
 		} else {
 			// Update
-			this.updateStatement.setString(1, propietario.getCorreo());
-			this.updateStatement.setString(2, propietario.getNombre());
-			this.updateStatement.setString(3, propietario.getAppat());
-			this.updateStatement.setString(4, propietario.getApmat());
-			this.updateStatement.setString(5, propietario.getDir());
-			this.updateStatement.setString(6, propietario.getPassword());
-			this.updateStatement.setInt(7, propietario.getIdPropietario());
+			this.updateStatement.setString(1, propietario.getNombre());
+			this.updateStatement.setString(2, propietario.getAppat());
+			this.updateStatement.setString(3, propietario.getApmat());
+			this.updateStatement.setString(4, propietario.getDir());
+			this.updateStatement.setInt(5, propietario.getIdPropietario());
 
 			this.updateStatement.executeUpdate();
 			
@@ -119,25 +121,27 @@ public class PropietarioDAO {
 				resultSet.getString("nombre"),
 				resultSet.getString("appat"),
 				resultSet.getString("apmat"),
-				resultSet.getString("dir"),
-				resultSet.getString("password")
+				resultSet.getString("dir")
 			);
 			
 			return propietario;
 		}
 		return null;
 	}
+	
+	// eliminar propietario
+	public boolean delete(int idPropietario) throws SQLException {
+		this.deleteByIdStatement.setInt(1, idPropietario);
+		this.deleteByIdStatement.executeUpdate();
+		return true;
+	}
 
 	// obtener propietario con email y password
 	public Propietario login(Propietario propietario) throws SQLException {
 		this.selectLoginStatement.setString(1, propietario.getCorreo());
 		ResultSet resultSet = this.selectLoginStatement.executeQuery();
-		resultSet.next();
 
-		System.out.println("login: "+propietario.getPassword());
-		System.out.println("db: "+resultSet.getString("password"));
-		
-		if(resultSet.getString("password")!=null && BCrypt.checkpw(
+		if(resultSet.next() && resultSet.getString("password")!=null && BCrypt.checkpw(
 			propietario.getPassword(),
 			resultSet.getString("password")
 		)) {

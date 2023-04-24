@@ -4,18 +4,8 @@
 <t:wrapper>
     <jsp:body>
         <div class="form-container">
-            <h1>Agenda una Mascota</h1>
+            <h1>Agrega una Mascota</h1>
             <form action="mascotas" method="POST">
-                <div>
-                    <h2>Propietario</h2>
-                    <label for="propietario">Buscar Propietario:</label>
-                    <input type="text" name="propietario" id="propietario" />
-                    <select name="propietario" id="propietario">
-                        <c:forEach items="${propietarios}" var="propietario">
-                            <option value="${propietario.id}">${propietario.nombre}</option>
-                        </c:forEach>
-                    </select>
-                </div>
                 <div>
                     <h2>Mascota</h2> 
                     <div>

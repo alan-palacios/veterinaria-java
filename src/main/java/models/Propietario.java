@@ -27,6 +27,22 @@ public class Propietario {
         this.dir = dir;
         this.password = password;
     }
+
+    public Propietario(int id_propietario, String nombre, String appat, String apmat, String dir) {
+        this.id_propietario = id_propietario;
+        this.nombre = nombre;
+        this.appat = appat;
+        this.apmat = apmat;
+        this.dir = dir;
+    }
+
+    public Propietario(int id_propietario, String correo, String nombre, String appat, String apmat, String dir) {
+        this.id_propietario = id_propietario;
+        this.nombre = nombre;
+        this.appat = appat;
+        this.apmat = apmat;
+        this.dir = dir;
+    }
     
     // Write all Getters and Setters
     

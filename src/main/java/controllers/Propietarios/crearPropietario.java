@@ -1,4 +1,4 @@
-package controllers;
+package controllers.Propietarios;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,19 +14,9 @@ import data_access_object.DBConnection;
 import data_access_object.PropietarioDAO;
 import models.Propietario;
 
-@WebServlet(name="PropietariosServlet", urlPatterns={"/PropietariosServlet"})
-public class PropietariosServlet extends HttpServlet {
+@WebServlet(name="crearPropietario", urlPatterns={"/crearPropietario"})
+public class crearPropietario extends HttpServlet {
    
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-    } 
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        processRequest(request, response);
-    } 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {

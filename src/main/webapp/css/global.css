@@ -79,7 +79,7 @@ h3 {
   width: auto;
 }
 
-input[type="submit"] {
+input[type="submit"], button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,6 +94,7 @@ input[type="submit"] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  padding: 0 10px;
 }
 
 input {
@@ -103,4 +104,14 @@ input {
   font-size: 1.2rem;
   border: 1px solid var(--color-gray);
   border-radius: 5px;
+}
+
+.btn-info {
+  background-color: #303030;
+  color: white;
+}
+
+.btn-error {
+  background-color: #303030;
+  color: white;
 }

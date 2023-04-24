@@ -7,13 +7,9 @@
         <a href="${pageContext.request.contextPath}/index.jsp">Inicio</a>
         <c:choose>
             <c:when test="${propietario != null}">
-                <a href="${pageContext.request.contextPath}/pages/FormularioMascotas.jsp">Agregar Mascota</a>
-                <a href="${pageContext.request.contextPath}/pages/FormularioMascotas.jsp">
+                <a href="${pageContext.request.contextPath}/pages/formularioMascota.jsp">Agregar Mascota</a>
+                <a href="${pageContext.request.contextPath}/leerPropietario?id=${propietario.idPropietario}">
                     <img src="${pageContext.request.contextPath}/assets/account-icon.png" alt="user" />
-                </a>
-                <a href="${pageContext.request.contextPath}/pages/logout.jsp"
-                >
-                    Logout
                 </a>
             </c:when>
             <c:otherwise>
