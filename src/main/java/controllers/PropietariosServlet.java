@@ -31,7 +31,7 @@ public class PropietariosServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         Connection connection = DBConnection.getConnection(request.getServletContext());
-        PropietarioDAO propietarioDAO = new PropietarioDAO(connection);
+        PropietarioDAO propietarioDAO = new PropietarioDAO(connection, request.getServletContext());
 
 		System.out.println("Guardando propietario");
         Propietario propietario = new Propietario(
@@ -40,7 +40,7 @@ public class PropietariosServlet extends HttpServlet {
             request.getParameter("appat"),
             request.getParameter("apmat"),
             request.getParameter("dir"),
-            request.getParameter("contraseña")
+            request.getParameter("password")
         );
         try {
             propietario = propietarioDAO.save(propietario);
@@ -50,7 +50,7 @@ public class PropietariosServlet extends HttpServlet {
                 propietario.getNombre()+
                 " agregado"
             );
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("pages/login.jsp");
         } catch (Exception e) {
 		    System.out.println(e);
             // TODO: handle exception

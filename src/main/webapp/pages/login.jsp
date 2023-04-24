@@ -9,12 +9,12 @@
                 Ingresa para poder agendar tu cita
             </p>
             <form
-                action="${pageContext.request.contextPath}/PropietariosServlet"
+                action="${pageContext.request.contextPath}/LoginServlet"
                 method="POST"
             >
                 <div class="col space-y-4">
                     <input type="text" name="correo" placeholder="Correo *" />
-                    <input type="text" name="contraseña" placeholder="Contraseña *" />
+                    <input type="text" name="password" placeholder="Contraseña *" />
                 </div>
                 <div class="row">
                     <input type="submit" value="INICIAR SESIÓN"/>

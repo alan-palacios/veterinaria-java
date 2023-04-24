@@ -4,5 +4,6 @@
 <t:wrapper>
     <jsp:body>
         <h1>Landpage</h1>
+        ${propietario.nombre}
     </jsp:body>
 </t:wrapper>

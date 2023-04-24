@@ -38,7 +38,7 @@
                 <h3 class="subtitle">Datos de acceso</h3>
                 <div class="form-grid">
                     <input type="text" name="correo" placeholder="Correo *" />
-                    <input type="text" name="contraseña" placeholder="Contraseña *" />
+                    <input type="text" name="password" placeholder="Contraseña *" />
                 </div>
                 <span>
                     Campos Obligatorios *

@@ -38,4 +38,9 @@
         <param-value>n0m3l0</param-value>
     </context-param>
 
+    <context-param>
+        <param-name>hash-secret</param-name>
+        <param-value>x?VfHEvRU=f-</param-value>
+    </context-param>
+
 </web-app>

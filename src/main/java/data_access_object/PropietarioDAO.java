@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.ServletContext;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 import models.Propietario;
@@ -14,31 +17,39 @@ import models.Propietario;
 public class PropietarioDAO {
 	private Connection connection; 
 	
-	private PreparedStatement insertStatement, updateStatement, selectAllStatement, selectByIdStatement;
+	private PreparedStatement insertStatement, updateStatement, selectAllStatement, selectByIdStatement, selectLoginStatement;
 	
 	private final String insertQuery = "INSERT INTO propietario (correo, nombre, appat, apmat, dir, password) VALUES (?, ?, ?, ?, ?, ?)";
 	private final String updateQuery = "UPDATE propietario SET correo=?, nombre=?, appat=?, apmat=?, dir=?, password=? WHERE id=?";
 	private final String selectAllQuery = "SELECT * FROM propietario";
 	private final String selectByIdQuery = "SELECT * FROM propietario WHERE id_propietario=?";
+	private final String selectLogin = "SELECT * FROM propietario WHERE correo=?";
 
-	public PropietarioDAO(Connection connection){
+	private String secret;
+
+	public PropietarioDAO(Connection connection, ServletContext context){
 		this.connection = connection;
+		this.secret = context.getInitParameter("hash-secret");
 		try {
 			this.insertStatement = this.connection.prepareStatement(this.insertQuery, Statement.RETURN_GENERATED_KEYS); // flag generate auto increment key
 			this.updateStatement = this.connection.prepareStatement(this.updateQuery);
 			this.selectAllStatement = this.connection.prepareStatement(this.selectAllQuery);
 			this.selectByIdStatement = this.connection.prepareStatement(this.selectByIdQuery);
+			this.selectLoginStatement = this.connection.prepareStatement(this.selectLogin);
 		} catch (Exception e) {
       e.printStackTrace();
 		}
 	}
 	
-	// guardar mascota
+	// guardar propietario
 	public Propietario save(Propietario propietario) throws SQLException {
 		System.out.println(propietario.getIdPropietario());
 		if (propietario.getIdPropietario() == -1) {
 			// cifrar contraseña
+			// propietario.setPassword(BCrypt.hashpw(propietario.getPassword(), secret));
+			System.out.println("original: "+propietario.getPassword());
 			propietario.setPassword(BCrypt.hashpw(propietario.getPassword(), BCrypt.gensalt()));
+			System.out.println(propietario.getPassword());
 
 			// Insert propietario
 			this.insertStatement.setString(1, propietario.getCorreo());
@@ -94,7 +105,7 @@ public class PropietarioDAO {
 		return propietarioList;
 	}
 	
-	// Obtener mascota por id
+	// Obtener propietario por id
 	public Propietario getById(int idPropietario) throws SQLException {
 		
 		this.selectByIdStatement.setInt(1, idPropietario);
@@ -113,6 +124,34 @@ public class PropietarioDAO {
 			);
 			
 			return propietario;
+		}
+		return null;
+	}
+
+	// obtener propietario con email y password
+	public Propietario login(Propietario propietario) throws SQLException {
+		this.selectLoginStatement.setString(1, propietario.getCorreo());
+		ResultSet resultSet = this.selectLoginStatement.executeQuery();
+		resultSet.next();
+
+		System.out.println("login: "+propietario.getPassword());
+		System.out.println("db: "+resultSet.getString("password"));
+		
+		if(resultSet.getString("password")!=null && BCrypt.checkpw(
+			propietario.getPassword(),
+			resultSet.getString("password")
+		)) {
+			Propietario propietarioLogin = new Propietario(
+				resultSet.getInt("id_propietario"),
+				resultSet.getString("correo"),
+				resultSet.getString("nombre"),
+				resultSet.getString("appat"),
+				resultSet.getString("apmat"),
+				resultSet.getString("dir"),
+				resultSet.getString("password")
+			);
+			
+			return propietarioLogin;
 		}
 		return null;
 	}
