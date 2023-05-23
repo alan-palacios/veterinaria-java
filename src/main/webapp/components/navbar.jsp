@@ -7,7 +7,6 @@
         <a href="${pageContext.request.contextPath}/index.jsp">Inicio</a>
         <c:choose>
             <c:when test="${propietario != null}">
-                <a href="${pageContext.request.contextPath}/pages/formularioMascota.jsp">Agregar Mascota</a>
                 <form
                     action="${pageContext.request.contextPath}/MascotasServlet"
                     method="POST"

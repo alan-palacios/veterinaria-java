@@ -76,9 +76,15 @@
                 <div class="col space-y-4 mascotas-container">
                     <c:forEach items="${mascotas}" var="mascota">
                         <div class="mascota-card">
-                            <h3>${mascota.nombre}</h3>
-                            <span>${mascota.sexo}</span>
-                            <div class="row">
+                            <div class="row p-0 justify-start">
+                                <img src="${pageContext.request.contextPath}/assets/favicon.png" alt="${mascota.nombre}"
+                                width="50" height="50" />
+                                <div class="col">
+                                    <h3>${mascota.nombre}</h3>
+                                    <span>${mascota.sexo}</span>
+                                </div>
+                            </div>
+                            <div class="row p-0 justify-start space-x-5">
                                 <form
                                     action="${pageContext.request.contextPath}/MascotasServlet"
                                     method="POST"
