@@ -131,7 +131,7 @@ h3 {
   padding: 0 10px;
 }
 
-input[type="text"], input[type="date"], select {
+input[type="text"], input[type="date"], input[type="datetime-local"], select {
   width: 15rem;
   height: 3rem;
   padding: 0 10px;

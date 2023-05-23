@@ -21,7 +21,7 @@
                     />
                     <input
                         type="text"
-                        name="id"
+                        name="idPropietario"
                         value="${propietario.idPropietario}"
                         hidden
                     />

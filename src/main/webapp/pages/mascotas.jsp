@@ -78,25 +78,56 @@
                         <div class="mascota-card">
                             <h3>${mascota.nombre}</h3>
                             <span>${mascota.sexo}</span>
-                            <span>${mascota.nacimiento}</span>
-                            <form
-                                action="${pageContext.request.contextPath}/MascotasServlet"
-                                method="POST"
-                            >
-                                <input
-                                    type="text"
-                                    name="method"
-                                    value="borrar"
-                                    hidden
-                                />
-                                <input
-                                    type="text"
-                                    name="id"
-                                    value="${mascota.idMascota}"
-                                    hidden
-                                />
-                                <input type="submit" value="BORRAR" class="button btn-error"/>
-                            </form>
+                            <div class="row">
+                                <form
+                                    action="${pageContext.request.contextPath}/MascotasServlet"
+                                    method="POST"
+                                >
+                                    <input
+                                        type="text"
+                                        name="method"
+                                        value="borrar"
+                                        hidden
+                                    />
+                                    <input
+                                        type="text"
+                                        name="idMascota"
+                                        value="${mascota.idMascota}"
+                                        hidden
+                                    />
+                                    <input
+                                        type="text"
+                                        name="idPropietario"
+                                        value="${propietario.idPropietario}"
+                                        hidden
+                                    />
+                                    <input type="submit" value="BORRAR" class="button btn-error"/>
+                                </form>
+                                <form
+                                    action="${pageContext.request.contextPath}/MascotasServlet"
+                                    method="POST"
+                                >
+                                    <input
+                                        type="text"
+                                        name="method"
+                                        value="seleccionar"
+                                        hidden
+                                    />
+                                    <input
+                                        type="text"
+                                        name="idMascota"
+                                        value="${mascota.idMascota}"
+                                        hidden
+                                    />
+                                    <input
+                                        type="text"
+                                        name="idPropietario"
+                                        value="${propietario.idPropietario}"
+                                        hidden
+                                    />
+                                    <input type="submit" value="EDITAR" class="button btn-info"/>
+                                </form>
+                            </div>
                         </div>
                     </c:forEach>
                 </div>

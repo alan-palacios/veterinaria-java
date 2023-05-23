@@ -24,13 +24,33 @@ import models.Mascota;
 
 @WebServlet(name="MascotasServlet", urlPatterns={"/MascotasServlet"})
 public class MascotasServlet extends HttpServlet {
+    
+    private void seleccionarMascota(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        Connection connection = DBConnection.getConnection(request.getServletContext());
+        MascotaDAO mascotaDAO = new MascotaDAO(connection);
+
+        String idMascota = request.getParameter("idMascota");
+        System.out.println("Buscando mascota: "+idMascota);
+        try {
+            Mascota mascota = mascotaDAO.getById(Integer.parseInt(idMascota));
+            if (mascota != null) {
+                System.out.println("Mascota encontrada: "+mascota.getNombre());
+                request.getSession().setAttribute("mascota", mascota);
+                response.sendRedirect("pages/mascota.jsp");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            response.sendRedirect("pages/mascotas.jsp");
+        }
+    }
 
     private void obtenerMascotasPropietario(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         Connection connection = DBConnection.getConnection(request.getServletContext());
         MascotaDAO mascotaDAO = new MascotaDAO(connection);
 
-        String idPropietario = request.getParameter("id");
+        String idPropietario = request.getParameter("idPropietario");
         System.out.println("Buscando propietario: "+idPropietario);
         try {
             List<Mascota> mascotas = mascotaDAO.getAllOfOwner(Integer.parseInt(idPropietario));
@@ -45,6 +65,37 @@ public class MascotasServlet extends HttpServlet {
         }
     }
     
+    private void actualizarMascota(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        Connection connection = DBConnection.getConnection(request.getServletContext());
+        MascotaDAO mascotaDAO = new MascotaDAO(connection);
+
+        try {
+            System.out.println("Actualizando mascota");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDate = dateFormat.parse(request.getParameter("nacimiento"));
+            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+
+            Mascota mascota = new Mascota(
+                Integer.parseInt(request.getParameter("idMascota")),
+                Integer.parseInt(request.getParameter("idPropietario")),
+                request.getParameter("nombre"),
+                request.getParameter("sexo"),
+                timestamp
+            );
+
+            mascota = mascotaDAO.update(mascota);
+            System.out.println(
+                "mascota "+
+                mascota.getId_propietario()+" "+
+                mascota.getNombre()+
+                " actualizado"
+            );
+            obtenerMascotasPropietario(request, response);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
     private void registrarMascota(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         Connection connection = DBConnection.getConnection(request.getServletContext());
@@ -70,12 +121,25 @@ public class MascotasServlet extends HttpServlet {
                 mascota.getNombre()+
                 " agregado"
             );
-            List<Mascota> newMascotas = (List<Mascota>)request.getSession().getAttribute("mascotas");
-            newMascotas.add(mascota);
-            request.getSession().setAttribute("mascotas", newMascotas);
-            response.sendRedirect("pages/mascotas.jsp");
+            obtenerMascotasPropietario(request, response);
         } catch (Exception e) {
 		    System.out.println(e);
+        }
+    }
+    
+    private void borrarMascota(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        Connection connection = DBConnection.getConnection(request.getServletContext());
+        MascotaDAO mascotaDAO = new MascotaDAO(connection);
+
+        try {
+            System.out.println("Borrando mascota");
+            int idMascota = Integer.parseInt(request.getParameter("idMascota"));
+            mascotaDAO.delete(idMascota);
+            System.out.println("mascota "+idMascota+" borrado");
+            obtenerMascotasPropietario(request, response);
+        } catch (Exception e) {
+            System.out.println(e);
         }
     }
     
@@ -85,13 +149,16 @@ public class MascotasServlet extends HttpServlet {
         String method = request.getParameter("method");
         switch (method) {
             case "actualizar":
-                obtenerMascotasPropietario(request, response);
+                actualizarMascota(request, response);
                 break;
             case "borrar":
-                obtenerMascotasPropietario(request, response);
+                borrarMascota(request, response);
                 break;
             case "registrar":
                 registrarMascota(request, response);
+                break;
+            case "seleccionar":
+                seleccionarMascota(request, response);
                 break;
             default:
                 obtenerMascotasPropietario(request, response);

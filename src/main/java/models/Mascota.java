@@ -38,11 +38,14 @@ public class Mascota{
     }
     
     public Mascota(int propietario_id, String nombre, String sexo, Timestamp nacimiento ){
-        super();
         this.id_propietario = propietario_id;
         this.nombre = nombre;
         this.nacimiento = nacimiento;
         this.sexo = sexo;
+    }
+    public Mascota(int id_mascota, int id_propietario, String nombre, String sexo, Timestamp nacimiento ){
+        this(id_propietario, nombre, sexo, nacimiento);
+        this.id_mascota = id_mascota;
     }
     
     public int getIdMascota() {

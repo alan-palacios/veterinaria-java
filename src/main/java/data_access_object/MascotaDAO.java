@@ -13,14 +13,15 @@ import models.Mascota;
 public class MascotaDAO {
 	private Connection connection; 
 	
-	private PreparedStatement insertBasicStatement, insertStatement, updateStatement, selectAllStatement, selectAllOwnerStatement, selectByIdStatement;
+	private PreparedStatement insertBasicStatement, insertStatement, updateStatement, selectAllStatement, selectAllOwnerStatement, selectByIdStatement, deleteByIdStatement;
 	
-	private final String insertQuery = "INSERT INTO mascota (id_propietario, raza_id, nacimiento, nombre, imagen, tamano, sexo, peso) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	private final String insertQuery = "INSERT INTO mascota (id_propietario, id_raza, fecha_nacimiento, nombre, imagen, tamano, sexo, peso) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private final String insertBasicQuery = "INSERT INTO mascota (id_propietario, nombre, sexo, fecha_nacimiento) VALUES (?, ?, ?, ?)";
-	private final String updateQuery = "UPDATE mascota SET id_propietario=?, raza_id=?, nacimiento=?, nombre=?, imagen=?, tamano=?, sexo=?, peso=? WHERE id=?";
-	private final String selectAllQuery = "SELECT * FROM mascotas";
+	private final String updateQuery = "UPDATE mascota SET fecha_nacimiento=?, nombre=?, sexo=? WHERE id_mascota=?";
+	private final String selectAllQuery = "SELECT * FROM mascota";
 	private final String selectAllOwnerQuery = "SELECT * FROM mascota WHERE id_propietario=?";
-	private final String selectByIdQuery = "SELECT * FROM mascotas WHERE id_mascota=?";
+	private final String selectByIdQuery = "SELECT * FROM mascota WHERE id_mascota=?";
+	private final String deleteById = "DELETE FROM mascota WHERE id_mascota=?";
 
 	public MascotaDAO(Connection connection){
 		this.connection = connection;
@@ -31,6 +32,7 @@ public class MascotaDAO {
 			this.selectAllStatement = this.connection.prepareStatement(this.selectAllQuery);
 			this.selectAllOwnerStatement = this.connection.prepareStatement(this.selectAllOwnerQuery);
 			this.selectByIdStatement = this.connection.prepareStatement(this.selectByIdQuery);
+			this.deleteByIdStatement = this.connection.prepareStatement(this.deleteById);
 		} catch (Exception e) {
       e.printStackTrace();
 		}
@@ -85,6 +87,16 @@ public class MascotaDAO {
 			
 			return mascota;
 		}
+	}
+	
+	public Mascota update(Mascota mascota) throws SQLException {
+		this.updateStatement.setTimestamp(1 , mascota.getNacimiento());
+		this.updateStatement.setString(2, mascota.getNombre());
+		this.updateStatement.setString(3, mascota.getSexo());
+		this.updateStatement.setInt(4, mascota.getIdMascota());
+		this.updateStatement.executeUpdate();
+		
+		return mascota;
 	}
 
 	// Obtener todas las mascotas
@@ -145,10 +157,10 @@ public class MascotaDAO {
 		
 		if(resultSet.next()) {
 			Mascota mascota = new Mascota(
-				resultSet.getInt("id"),
-				resultSet.getInt("propietario_id"),
-				resultSet.getInt("raza_id"),
-				resultSet.getTimestamp("nacimiento"),
+				resultSet.getInt("id_mascota"),
+				resultSet.getInt("id_propietario"),
+				resultSet.getInt("id_raza"),
+				resultSet.getTimestamp("fecha_nacimiento"),
 				resultSet.getString("nombre"),
 				resultSet.getBlob("imagen"),
 				resultSet.getInt("tamano"),
@@ -161,4 +173,9 @@ public class MascotaDAO {
 		return null;
 	}
 	
+	public boolean delete(int idMascota) throws SQLException {
+		this.deleteByIdStatement.setInt(1, idMascota);
+		this.deleteByIdStatement.executeUpdate();
+		return true;
+	}
 }
