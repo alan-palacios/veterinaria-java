@@ -1,17 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Blob;
 import java.sql.Connection;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,42 +22,80 @@ import data_access_object.DBConnection;
 import data_access_object.MascotaDAO;
 import models.Mascota;
 
-/**
- *
- * @author AlanPalacios
- */
+@WebServlet(name="MascotasServlet", urlPatterns={"/MascotasServlet"})
 public class MascotasServlet extends HttpServlet {
-    Connection connection = DBConnection.getConnection(getServletContext());
-    MascotaDAO mascotaDAO = new MascotaDAO(connection);
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    private void obtenerMascotasPropietario(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        Connection connection = DBConnection.getConnection(request.getServletContext());
+        MascotaDAO mascotaDAO = new MascotaDAO(connection);
+
+        String idPropietario = request.getParameter("id");
+        System.out.println("Buscando propietario: "+idPropietario);
+        try {
+            List<Mascota> mascotas = mascotaDAO.getAllOfOwner(Integer.parseInt(idPropietario));
+            if (mascotas != null) {
+                System.out.println("Mascotas encontradas: "+mascotas.size());
+                request.getSession().setAttribute("mascotas", mascotas);
+                response.sendRedirect("pages/mascotas.jsp");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            response.sendRedirect("pages/cuenta.jsp");
+        }
     }
+    
+    private void registrarMascota(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        Connection connection = DBConnection.getConnection(request.getServletContext());
+        MascotaDAO mascotaDAO = new MascotaDAO(connection);
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            System.out.println("Guardando mascota");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDate = dateFormat.parse(request.getParameter("nacimiento"));
+            Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+
+            Mascota mascota = new Mascota(
+                Integer.parseInt(request.getParameter("idPropietario")),
+                request.getParameter("nombre"),
+                request.getParameter("sexo"),
+                timestamp
+            );
+
+            mascota = mascotaDAO.saveBasicInfo(mascota);
+		    System.out.println(
+                "mascota "+
+                mascota.getId_propietario()+" "+
+                mascota.getNombre()+
+                " agregado"
+            );
+            List<Mascota> newMascotas = (List<Mascota>)request.getSession().getAttribute("mascotas");
+            newMascotas.add(mascota);
+            request.getSession().setAttribute("mascotas", newMascotas);
+            response.sendRedirect("pages/mascotas.jsp");
+        } catch (Exception e) {
+		    System.out.println(e);
+        }
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
-        Mascota mascota = new Mascota(
-            Integer.parseInt(request.getParameter("propietario_id")),
-            Integer.parseInt(request.getParameter("raza_id")),
-            java.sql.Timestamp.valueOf(request.getParameter("nacimiento")),
-            request.getParameter("nombre"),
-            new com.mysql.cj.jdbc.Blob(null, null),
-            Integer.parseInt(request.getParameter("tamano")),
-            Integer.parseInt(request.getParameter("peso")),
-            request.getParameter("sexo")
-        );
-        try {
-            mascotaDAO.save(mascota);
-        } catch (Exception e) {
-            // TODO: handle exception
+        String method = request.getParameter("method");
+        switch (method) {
+            case "actualizar":
+                obtenerMascotasPropietario(request, response);
+                break;
+            case "borrar":
+                obtenerMascotasPropietario(request, response);
+                break;
+            case "registrar":
+                registrarMascota(request, response);
+                break;
+            default:
+                obtenerMascotasPropietario(request, response);
+                break;
         }
     }
 

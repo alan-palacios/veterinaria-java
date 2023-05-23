@@ -3,9 +3,10 @@ package models;
 import java.sql.Blob;
 import java.sql.Timestamp;
 
-public class Mascota extends DBObject{
-    private int propietario_id;
-    private int raza_id;
+public class Mascota{
+    private int id_mascota=-1;
+    private int id_propietario;
+    private int id_raza;
     private Timestamp nacimiento;
     private String nombre;
     private Blob imagen;
@@ -14,9 +15,9 @@ public class Mascota extends DBObject{
     private String sexo;
 
     public Mascota(int id, int propietario_id, int raza_id, Timestamp nacimiento, String nombre, Blob imagen, int tamano, int peso, String sexo) {
-        super(id);
-        this.propietario_id = propietario_id;
-        this.raza_id = raza_id;
+        this.id_mascota = id;
+        this.id_propietario = propietario_id;
+        this.id_raza = raza_id;
         this.nacimiento = nacimiento;
         this.nombre = nombre;
         this.imagen = imagen;
@@ -26,9 +27,8 @@ public class Mascota extends DBObject{
     }
     
     public Mascota(int propietario_id, int raza_id, Timestamp nacimiento, String nombre, Blob imagen, int tamano, int peso, String sexo) {
-        super();
-        this.propietario_id = propietario_id;
-        this.raza_id = raza_id;
+        this.id_propietario = propietario_id;
+        this.id_raza = raza_id;
         this.nacimiento = nacimiento;
         this.nombre = nombre;
         this.imagen = imagen;
@@ -36,21 +36,37 @@ public class Mascota extends DBObject{
         this.sexo = sexo;
         this.peso = peso;
     }
-
-    public int getPropietario_id() {
-        return propietario_id;
+    
+    public Mascota(int propietario_id, String nombre, String sexo, Timestamp nacimiento ){
+        super();
+        this.id_propietario = propietario_id;
+        this.nombre = nombre;
+        this.nacimiento = nacimiento;
+        this.sexo = sexo;
+    }
+    
+    public int getIdMascota() {
+        return id_mascota;
+    }
+    
+    public int setIdMascota(int id_mascota) {
+        return this.id_mascota = id_mascota;
     }
 
-    public void setPropietario_id(int propietario_id) {
-        this.propietario_id = propietario_id;
+    public int getId_propietario() {
+        return id_propietario;
     }
 
-    public int getRaza_id() {
-        return raza_id;
+    public void setId_propietario(int propietario_id) {
+        this.id_propietario = propietario_id;
     }
 
-    public void setRaza_id(int raza_id) {
-        this.raza_id = raza_id;
+    public int getId_raza() {
+        return id_raza;
+    }
+
+    public void setId_raza(int raza_id) {
+        this.id_raza = raza_id;
     }
 
     public Timestamp getNacimiento() {

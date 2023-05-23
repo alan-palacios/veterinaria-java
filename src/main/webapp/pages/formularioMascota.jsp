@@ -44,7 +44,7 @@
                         <input type="file" name="imagen" id="imagen" />
                     </div>
                 </div>
-                <input type="submit" value="Agregar Mascota" />
+                <input type="submit" value="Agregar Mascota" class="btn-primary" />
             </form>
         </div>
     </jsp:body>

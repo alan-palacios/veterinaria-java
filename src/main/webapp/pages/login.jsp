@@ -17,9 +17,9 @@
                     <input type="text" name="password" placeholder="Contraseña *" />
                 </div>
                 <div class="row">
-                    <input type="submit" value="INICIAR SESIÓN"/>
+                    <input type="submit" value="INICIAR SESIÓN" class="btn-primary"/>
                 </div>
-                <div class="row">
+                <div class="row space-x-2">
                     <span>¿No tienes una cuenta?</span>
                     <a href="FormularioRegistro.jsp">Regístrate aquí</a>
                 </div>

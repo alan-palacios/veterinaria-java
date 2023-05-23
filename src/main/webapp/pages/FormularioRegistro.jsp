@@ -9,9 +9,15 @@
                 Crea tu cuenta con nosotros para que puedas agendar tu cita
             </p>
             <form
-                action="${pageContext.request.contextPath}/crearPropietario"
+                action="${pageContext.request.contextPath}/PropietariosServlet"
                 method="POST"
             >
+                <input
+                    type="text"
+                    name="method"
+                    value="registrar"
+                    hidden
+                />
                 <h3 class="subtitle">Datos Personales</h3>
                 <div class="form-grid w-full">
                     <input
@@ -44,9 +50,9 @@
                     Campos Obligatorios *
                 </span>
                 <div class="row">
-                    <input type="submit" value="CREAR CUENTA"/>
+                    <input type="submit" value="CREAR CUENTA" class="btn-primary"/>
                 </div>
-                <div class="row">
+                <div class="row space-x-2">
                     <span>¿Ya tienes una cuenta?</span>
                     <a href="login.jsp">Inicia sesión</a>
                 </div>

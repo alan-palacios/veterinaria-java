@@ -13,32 +13,49 @@ import models.Mascota;
 public class MascotaDAO {
 	private Connection connection; 
 	
-	private PreparedStatement insertStatement, updateStatement, selectAllStatement, selectByIdStatement;
+	private PreparedStatement insertBasicStatement, insertStatement, updateStatement, selectAllStatement, selectAllOwnerStatement, selectByIdStatement;
 	
-	private final String insertQuery = "INSERT INTO mascotas (propietario_id, raza_id, nacimiento, nombre, imagen, tamano, sexo, peso) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-	private final String updateQuery = "UPDATE mascotas SET propietario_id=?, raza_id=?, nacimiento=?, nombre=?, imagen=?, tamano=?, sexo=?, peso=? WHERE id=?";
+	private final String insertQuery = "INSERT INTO mascota (id_propietario, raza_id, nacimiento, nombre, imagen, tamano, sexo, peso) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	private final String insertBasicQuery = "INSERT INTO mascota (id_propietario, nombre, sexo, fecha_nacimiento) VALUES (?, ?, ?, ?)";
+	private final String updateQuery = "UPDATE mascota SET id_propietario=?, raza_id=?, nacimiento=?, nombre=?, imagen=?, tamano=?, sexo=?, peso=? WHERE id=?";
 	private final String selectAllQuery = "SELECT * FROM mascotas";
-	private final String selectByIdQuery = "SELECT * FROM mascotas WHERE id=?";
+	private final String selectAllOwnerQuery = "SELECT * FROM mascota WHERE id_propietario=?";
+	private final String selectByIdQuery = "SELECT * FROM mascotas WHERE id_mascota=?";
 
 	public MascotaDAO(Connection connection){
 		this.connection = connection;
 		try {
+			this.insertBasicStatement = this.connection.prepareStatement(this.insertBasicQuery, Statement.RETURN_GENERATED_KEYS); // flag generate auto increment key
 			this.insertStatement = this.connection.prepareStatement(this.insertQuery, Statement.RETURN_GENERATED_KEYS); // flag generate auto increment key
 			this.updateStatement = this.connection.prepareStatement(this.updateQuery);
 			this.selectAllStatement = this.connection.prepareStatement(this.selectAllQuery);
+			this.selectAllOwnerStatement = this.connection.prepareStatement(this.selectAllOwnerQuery);
 			this.selectByIdStatement = this.connection.prepareStatement(this.selectByIdQuery);
 		} catch (Exception e) {
       e.printStackTrace();
 		}
 	}
 	
+	public Mascota saveBasicInfo(Mascota mascota) throws SQLException {
+		if (mascota.getIdMascota() == -1) {
+			// Insert
+			this.insertBasicStatement.setInt(1, mascota.getId_propietario());
+			this.insertBasicStatement.setString(2, mascota.getNombre());
+			this.insertBasicStatement.setString(3, mascota.getSexo());
+			this.insertBasicStatement.setTimestamp(4, mascota.getNacimiento());
+			
+			int idMascota = this.insertBasicStatement.executeUpdate();
+			mascota.setIdMascota(idMascota);
+		}
+		return mascota;
+	}
 	// guardar mascota
 	public Mascota save(Mascota mascota) throws SQLException {
-		if (mascota.getId() == -1) {
+		if (mascota.getIdMascota() == -1) {
 			
 			// Insert
-			this.insertStatement.setInt(1, mascota.getPropietario_id());
-			this.insertStatement.setInt(2, mascota.getRaza_id());
+			this.insertStatement.setInt(1, mascota.getId_propietario());
+			this.insertStatement.setInt(2, mascota.getId_raza());
 			this.insertStatement.setTimestamp(3, mascota.getNacimiento());
 			this.insertStatement.setString(4, mascota.getNombre());
 			this.insertStatement.setBlob(5, mascota.getImagen());
@@ -47,22 +64,22 @@ public class MascotaDAO {
 			this.insertStatement.setInt(8, mascota.getPeso());
 			
 			int idMascota = this.insertStatement.executeUpdate();
-			mascota.setId(idMascota);
+			mascota.setIdMascota(idMascota);
 			
 			return mascota;
 			
 		} else {
 			
 			// Update
-			this.updateStatement.setInt(1, mascota.getPropietario_id());
-			this.updateStatement.setInt(2, mascota.getRaza_id());
+			this.updateStatement.setInt(1, mascota.getId_propietario());
+			this.updateStatement.setInt(2, mascota.getId_raza());
 			this.updateStatement.setTimestamp(3, mascota.getNacimiento());
 			this.updateStatement.setString(4, mascota.getNombre());
 			this.updateStatement.setBlob(5, mascota.getImagen());
 			this.updateStatement.setInt(6, mascota.getTamano());
 			this.updateStatement.setString(7, mascota.getSexo());
 			this.updateStatement.setInt(8, mascota.getPeso());
-			this.updateStatement.setInt(9, mascota.getId());
+			this.updateStatement.setInt(9, mascota.getIdMascota());
 
 			this.updateStatement.executeUpdate();
 			
@@ -90,6 +107,30 @@ public class MascotaDAO {
 				resultSet.getString("sexo")
 			);
 			
+			mascotasList.add(mascota);
+		}
+		return mascotasList;
+	}
+	
+	public List<Mascota> getAllOfOwner(int idPropietario) throws SQLException {
+		
+		List<Mascota> mascotasList = new ArrayList<>();
+		this.selectAllOwnerStatement.setInt(1, idPropietario);
+		
+		ResultSet resultSet = this.selectAllOwnerStatement.executeQuery();
+		
+		while(resultSet.next()) {
+			Mascota mascota = new Mascota(
+				resultSet.getInt("id_mascota"),
+				resultSet.getInt("id_propietario"),
+				resultSet.getInt("id_raza"),
+				resultSet.getTimestamp("fecha_nacimiento"),
+				resultSet.getString("nombre"),
+				resultSet.getBlob("imagen"),
+				resultSet.getInt("tamano"),
+				resultSet.getInt("peso"),
+				resultSet.getString("sexo")
+			);
 			mascotasList.add(mascota);
 		}
 		return mascotasList;
